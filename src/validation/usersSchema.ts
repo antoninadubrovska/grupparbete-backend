@@ -20,6 +20,19 @@ export type UserWithoutId = z.infer<typeof UserWithoutIdSchema>;
 
 
 
+//test zod
+const invalidUser = {
+	id: "user-003",
+	name: "Sofia Nilsson",
+	role: "something-wrong:D",
+	email: "not-an-email:D",
+	phone: "+46 72 345 67 89",
+	createdAt: "2026-09-03T08:15:00Z",
+	updatedAt: "2026-09-03T08:15:00Z",
+};
 
+UserSchema.parse(invalidUser);
+// npm run build
+// node dist/testUserSchema.js
 
 // UserFromDbSchema
