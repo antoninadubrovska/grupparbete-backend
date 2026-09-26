@@ -11,7 +11,7 @@ import {
 
 import { cartSchema, cartFromDbSchema } from "./validation/cartSchema.js";
 
-import { PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import db from "./aws.js";
 
 const TABLE_NAME = "grupparbete-backend";
@@ -23,25 +23,24 @@ async function seed() {
 	for (const user of users) {
 		UserSchema.parse(user);
 	}
-	console.log("Users validated.");
+	console.log("Users validated");
 
 	// Validate products
 	for (const product of products) {
 		ProductSchema.parse(product);
 	}
-	console.log("Products validated.");
+	console.log("Products validated");
 
 	// Validate cart items
 	for (const cart of carts) {
 		cartSchema.parse(cart);
 	}
-	console.log("Cart items validated.");
+	console.log("Cart items validated");
 
-	console.log("All seed data is valid!");
+	console.log("All seed data is valid");
+
 
 	// Seed users
-	console.log("Seeding users...");
-
 	for (const user of users) {
 		const item = {
 			pk: `USER#${user.id}`,
@@ -50,7 +49,6 @@ async function seed() {
 			...user,
 		};
 
-		// Validate the complete DynamoDB item
 		UserFromDbSchema.parse(item);
 
 		await db.send(
@@ -59,15 +57,12 @@ async function seed() {
 				Item: item,
 			}),
 		);
-
 		console.log(`Seeded user: ${user.id}`);
 	}
-
 	console.log("All users seeded");
 
-	// Seed products
 
-	console.log("Seeding products...");
+	// Seed products
 	for (const product of products) {
 		const item = {
 			pk: "PRODUCTS",
@@ -75,15 +70,16 @@ async function seed() {
 			type: "PRODUCT" as const,
 			...product,
 		};
+
 		ProductFromDbSchema.parse(item);
+		
 		await db.send(new PutCommand({ TableName: TABLE_NAME, Item: item }));
 		console.log(`Seeded product: ${product.id}`);
 	}
 	console.log("All products seeded");
 
-	// Seed cart items
-	console.log("Seeding cart items...");
 
+	// Seed cart items
 	for (const cart of carts) {
 		const item = {
 			pk: `USER#${cart.userId}`,
