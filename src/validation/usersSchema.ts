@@ -1,11 +1,10 @@
-
 import * as z from "zod";
 
 export const UserSchema = z.object({
 	id: z.string(),
 	name: z.string(),
 	role: z.enum(["customer", "admin"]),
-	email: z.string().email(),
+	email: z.email(),
 	phone: z.string(),
 	createdAt: z.string(),
 	updatedAt: z.string(),
@@ -18,21 +17,18 @@ export const UserWithoutIdSchema = UserSchema.omit({ id: true });
 
 export type UserWithoutId = z.infer<typeof UserWithoutIdSchema>;
 
+export const UserFromDbSchema = z.object({
+	pk: z.string(),
+	sk: z.string(),
+	type: z.literal("USER"),
+	id: z.string(),
+	name: z.string(),
+	role: z.enum(["customer", "admin"]),
+	email: z.email(),
+	phone: z.string(),
+	createdAt: z.string(),
+	updatedAt: z.string(),
+});
+export const UserListFromDbSchema = z.array(UserFromDbSchema);
 
-
-//test zod
-const invalidUser = {
-	id: "user-003",
-	name: "Sofia Nilsson",
-	role: "something-wrong:D",
-	email: "not-an-email:D",
-	phone: "+46 72 345 67 89",
-	createdAt: "2026-09-03T08:15:00Z",
-	updatedAt: "2026-09-03T08:15:00Z",
-};
-
-UserSchema.parse(invalidUser);
-// npm run build
-// node dist/testUserSchema.js
-
-// UserFromDbSchema
+export type UserFromDb = z.infer<typeof UserFromDbSchema>;
