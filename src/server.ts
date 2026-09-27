@@ -1,5 +1,6 @@
 import express, { type Express, type RequestHandler } from "express";
 import { formatTimestamp } from "./timeUtilities.js";
+import usersRouter from "./routes/user.js";
 
 const app: Express = express();
 
@@ -17,6 +18,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
 	res.send("Webshop API is running!");
 });
+
+// mount routers
+app.use("/api/users", usersRouter);
 
 app.listen(port, () => {
 	console.log(`Server is listening on port ${port}...`);
