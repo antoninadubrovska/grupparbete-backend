@@ -13,19 +13,25 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>;
 
 // Good practice - utgå från befintlig typ i stället för att göra två nästan likadana scheman :)
-export const UserWithoutIdSchema = UserSchema.omit({ id: true });
+// Used when creating or replacing a user. // id and timestamps are generated/controlled by the server.
+export const UserWithoutIdSchema = UserSchema.omit({
+	id: true,
+	createdAt: true,
+	updatedAt: true,
+  });
 
 export type UserWithoutId = z.infer<typeof UserWithoutIdSchema>;
 
+// Describes how a user is stored in DynamoDB
 export const UserFromDbSchema = z.object({
 	pk: z.string(),
 	sk: z.string(),
 	type: z.literal("USER"),
 	id: z.string(),
-	name: z.string(),
+	name: z.string().min(1),
 	role: z.enum(["customer", "admin"]),
 	email: z.email(),
-	phone: z.string(),
+	phone: z.string().min(1),
 	createdAt: z.string(),
 	updatedAt: z.string(),
 });
