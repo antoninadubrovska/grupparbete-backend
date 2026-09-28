@@ -1,3 +1,6 @@
+
+//TODO refactor - move backend related code to backendSrc
+
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { accessKey, secretAccessKey } from "./keys.js";
