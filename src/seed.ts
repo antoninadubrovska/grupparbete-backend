@@ -11,7 +11,7 @@ import {
 
 import { cartSchema, cartFromDbSchema } from "./validation/cartSchema.js";
 
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, DeleteCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import db from "./aws.js";
 
 const TABLE_NAME = "grupparbete-backend";
@@ -39,7 +39,6 @@ async function seed() {
 
 	console.log("All seed data is valid");
 
-
 	// Seed users
 	for (const user of users) {
 		const item = {
@@ -61,23 +60,58 @@ async function seed() {
 	}
 	console.log("All users seeded");
 
+	// Delete existing products
+	const existingProducts = await db.send(
+		new ScanCommand({
+			TableName: TABLE_NAME,
+			FilterExpression: "#type = :type",
+			ExpressionAttributeNames: {
+				"#type": "type",
+			},
+			ExpressionAttributeValues: {
+				":type": "PRODUCT",
+			},
+		}),
+	);
+
+	for (const product of existingProducts.Items ?? []) {
+		await db.send(
+			new DeleteCommand({
+				TableName: TABLE_NAME,
+				Key: {
+					pk: product.pk,
+					sk: product.sk,
+				},
+			}),
+		);
+
+		console.log(`Deleted old product: ${product.id}`);
+	}
+
+	console.log("All old products deleted");
 
 	// Seed products
 	for (const product of products) {
 		const item = {
 			pk: "PRODUCTS",
-			sk: `PRODUCT#${product.id}`,
+			sk: `CATEGORY#${product.category}#PRODUCT#${product.id}`,
 			type: "PRODUCT" as const,
 			...product,
 		};
 
 		ProductFromDbSchema.parse(item);
-		
-		await db.send(new PutCommand({ TableName: TABLE_NAME, Item: item }));
+
+		await db.send(
+			new PutCommand({
+				TableName: TABLE_NAME,
+				Item: item,
+			}),
+		);
+
 		console.log(`Seeded product: ${product.id}`);
 	}
-	console.log("All products seeded");
 
+	console.log("All products seeded");
 
 	// Seed cart items
 	for (const cart of carts) {
