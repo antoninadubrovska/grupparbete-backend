@@ -14,7 +14,6 @@ import {
 	type UserWithoutId,
 } from "../validation/usersSchema.js";
 
-//?
 import { randomUUID } from "node:crypto";
 
 import {
@@ -104,7 +103,6 @@ router.post<{}, IdResponse, UserWithoutId>("/", async (req, res) => {
 		return;
 	}
 
-	//?
 	const id = `user-${randomUUID()}`;
 
 	const command = new PutCommand({
@@ -126,5 +124,49 @@ router.post<{}, IdResponse, UserWithoutId>("/", async (req, res) => {
 		res.sendStatus(500);
 	}
 });
+
+//PUT /api/users/:id
+//..
+
+
+
+
+// DELETE /api/users/:id
+router.delete<IdParam>("/:id", async (req, res) => {
+	const id: string = req.params.id;
+
+	const command = new DeleteCommand({
+		TableName: TABLE_NAME,
+		Key: {
+			pk: `USER#${id}`,
+			sk: `USER#${id}`,
+		},
+		ReturnValues: "ALL_OLD",
+	});
+
+	try {
+		const result = await db.send(command);
+
+		if (result.Attributes) {
+			res.sendStatus(204);
+		} else {
+			res.sendStatus(404);
+		}
+	} catch (error) {
+		console.error("DELETE /api/users/:id error:", error);
+		res.sendStatus(500);
+	}
+});
+
+// DELETE existing user  204 tested (must remove USER# from id)
+// DELETE nonexistent user  404
+// DynamoDB error  500
+
+
+
+
+
+
+
 
 export default router;
