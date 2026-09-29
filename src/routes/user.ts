@@ -55,6 +55,56 @@ router.get<{}, User[]>("/", async (req, res) => {
 	}
 });
 
+// GET /api/users/search?q=searchstring
+router.get<{}, User[]>("/search", async (req, res) => {
+	const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
+
+	if (!q) {
+		res.sendStatus(400);
+		return;
+	}
+
+	const searchWords = q.toLowerCase().split(/\s+/);
+
+	const command = new ScanCommand({
+		TableName: TABLE_NAME,
+		FilterExpression: "#type = :type",
+		ExpressionAttributeNames: {
+			"#type": "type",
+		},
+		ExpressionAttributeValues: {
+			":type": "USER",
+		},
+	});
+
+	try {
+		const result = await db.send(command);
+
+		const usersFromDb = UserListFromDbSchema.parse(result.Items ?? []);
+
+		const users: User[] = usersFromDb
+			.filter((user) => {
+				const name = user.name.toLowerCase();
+
+				return searchWords.some((word) => name.includes(word));
+			})
+			.map((user) => ({
+				id: user.id,
+				name: user.name,
+				role: user.role,
+				email: user.email,
+				phone: user.phone,
+				createdAt: user.createdAt,
+				updatedAt: user.updatedAt,
+			}));
+
+		res.status(200).send(users);
+	} catch (error) {
+		console.error("GET /api/users/search error:", error);
+		res.sendStatus(500);
+	}
+});
+
 // GET /api/users/:id
 router.get<IdParam, User>("/:id", async (req, res) => {
 	const id: string = req.params.id;
