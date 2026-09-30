@@ -1,3 +1,4 @@
+console.log('verison 1')
 import express, { type Express, type RequestHandler } from "express";
 import { formatTimestamp } from "./timeUtilities.js";
 import usersRouter from "./routes/user.js";
@@ -7,21 +8,23 @@ import cors from "cors";
 
 const app: Express = express();
 
-
+// app.use( express.static('./static/') )
 app.use(cors({
 	origin: "http://127.0.0.1:5500"
   }));
 
-const port: number = 3000;
-
-const logger: RequestHandler = (req, res, next) => {
-	const now = formatTimestamp();
-	console.log(`${now}  ${req.method}  ${req.url}`);
-	next();
-};
-
-app.use("/", logger);
-app.use(express.json());
+	app.use( express.static('./frontend') )
+	
+	const port: number = 3000;
+	
+	const logger: RequestHandler = (req, res, next) => {
+		const now = formatTimestamp();
+		console.log(`${now}  ${req.method}  ${req.url}`);
+		next();
+	};
+	
+	app.use("/", logger);
+	app.use(express.json());
 
 app.get("/", (req, res) => {
 	res.send("Webshop API is running!");
