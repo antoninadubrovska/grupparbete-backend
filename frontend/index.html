@@ -53,7 +53,10 @@
 	<body>
 		<h1>Users</h1>
 
-		<button onclick="getUsers()">Refresh Users</button>
+		<input type="text" id="searchInput" placeholder="Search by name" />
+
+		<button onclick="searchUsers()">Search</button>
+		<button onclick="getUsers()">Show All Users</button>
 
 		<div id="message"></div>
 
@@ -82,9 +85,11 @@
 				message.textContent = "Loading...";
 
 				try {
-					const response = await fetch(
-						"http://localhost:3000/api/users",
-					);
+					// const response = await fetch(
+					// 	"http://localhost:3000/api/users",
+					// );
+
+					const response = await fetch("/api/users");
 
 					if (!response.ok) {
 						throw new Error(`HTTP ${response.status}`);
@@ -111,6 +116,63 @@
 
 						tableBody.appendChild(row);
 					});
+				} catch (error) {
+					console.error(error);
+
+					message.className = "error";
+					message.textContent = "Error: " + error.message;
+				}
+			}
+
+			async function searchUsers() {
+				const searchInput = document.getElementById("searchInput");
+				const tableBody = document.getElementById("usersTableBody");
+				const message = document.getElementById("message");
+
+				const searchText = searchInput.value.trim();
+
+				if (!searchText) {
+					message.className = "error";
+					message.textContent = "Please enter a name to search.";
+					return;
+				}
+
+				tableBody.innerHTML = "";
+				message.className = "";
+				message.textContent = "Searching...";
+
+				try {
+					const response = await fetch(
+						`/api/users/search?q=${encodeURIComponent(searchText)}`,
+					);
+
+					if (!response.ok) {
+						throw new Error(`HTTP ${response.status}`);
+					}
+
+					const users = await response.json();
+
+					message.textContent = "";
+
+					users.forEach((user) => {
+						const row = document.createElement("tr");
+
+						row.innerHTML = `
+        <td>${user.id}</td>
+        <td>${user.name}</td>
+        <td>${user.role}</td>
+        <td>${user.email}</td>
+        <td>${user.phone}</td>
+        <td>${formatDate(user.createdAt)}</td>
+        <td>${formatDate(user.updatedAt)}</td>
+      `;
+
+						tableBody.appendChild(row);
+					});
+
+					if (users.length === 0) {
+						message.textContent = "No users found.";
+					}
 				} catch (error) {
 					console.error(error);
 
