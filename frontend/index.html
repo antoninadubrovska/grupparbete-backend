@@ -85,9 +85,11 @@
 				message.textContent = "Loading...";
 
 				try {
-					const response = await fetch(
-						"http://localhost:3000/api/users",
-					);
+					// const response = await fetch(
+					// 	"http://localhost:3000/api/users",
+					// );
+
+					const response = await fetch("/api/users");
 
 					if (!response.ok) {
 						throw new Error(`HTTP ${response.status}`);
