@@ -8,6 +8,7 @@ import {
 	type ProductWithoutId,
 } from "../validation/productsSchema.ts"
 import {
+	QueryCommand,
 	ScanCommand,
 	GetCommand,
 	PutCommand,
@@ -25,11 +26,16 @@ type IdResponse = { id: string }
 
 // GET /api/products
 router.get<{}, Product[]> ("/", async (req, res) => {
-	const command = new ScanCommand ({
+	const command = new QueryCommand ({
 		TableName: TABLE_NAME,
-		FilterExpression: "#type = :type",
-		ExpressionAttributeValues: { ":type": "PRODUCT"},
-		ExpressionAttributeNames: {"#type": "type"}
+		KeyConditionExpression: "pk = :pk AND begins_with(sk, :sk",
+		// FilterExpression: "#type = :type",
+		// ExpressionAttributeValues: { ":type": "PRODUCT"},
+		// ExpressionAttributeNames: {"#type": "type"}
+		ExpressionAttributeValues: {
+			":pk": "PRODUCTS",
+			":sk": "CATEGORY#Electronics"
+		}
 	});
 	try{
 		const result = await db.send(command);
