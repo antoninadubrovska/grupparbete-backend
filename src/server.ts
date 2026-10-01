@@ -1,4 +1,3 @@
-console.log('verison 1')
 import express, { type Express, type RequestHandler } from "express";
 import { formatTimestamp } from "./timeUtilities.js";
 import usersRouter from "./routes/user.js";
