@@ -25,7 +25,7 @@ export async function getProducts() {
 }
 
 export async function searchProducts() {
-	const searchInput = document.getElementById("searchInput");
+	const searchInput = document.getElementById("productSearchInput");
 	const message = document.getElementById("productsMessage");
 
 	const searchText = searchInput.value.trim();
