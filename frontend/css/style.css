@@ -19,10 +19,6 @@ input {
 	font: inherit;
 }
 
-/* ------------------------------
-	Layout
-	------------------------------ */
-
 .container {
 	display: grid;
 	gap: 1.5em;
@@ -41,10 +37,6 @@ h1 {
 	margin: 0;
 	font-size: 2em;
 }
-
-/* ------------------------------
-	Search
-	------------------------------ */
 
 .search-section {
 	display: grid;
@@ -91,10 +83,6 @@ input:focus-visible {
 	outline-offset: 0.1em;
 }
 
-/* ------------------------------
-	Messages
-	------------------------------ */
-
 #message {
 	min-height: 1.5em;
 }
@@ -102,10 +90,6 @@ input:focus-visible {
 .error {
 	color: #b00020;
 }
-
-/* ------------------------------
-	Users
-	------------------------------ */
 
 .users-grid {
 	display: grid;
@@ -124,6 +108,20 @@ input:focus-visible {
 	border-radius: 0.5em;
 }
 
+.user-id {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.user-id span:last-child {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .user-field {
 	display: grid;
 	gap: 0.2em;
@@ -139,9 +137,9 @@ input:focus-visible {
 	overflow-wrap: anywhere;
 }
 
-/* ------------------------------
-	Responsive layout
-	------------------------------ */
+.hidden {
+	display: none;
+}
 
 @media (max-width: 60em) {
 	.users-grid {
