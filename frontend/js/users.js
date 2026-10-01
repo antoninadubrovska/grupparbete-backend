@@ -1,3 +1,7 @@
+import { fetchUsers, searchUsersApi } from "./api.js";
+
+
+
 export async function getUsers() {
 	const message = document.getElementById("message");
 
@@ -5,13 +9,8 @@ export async function getUsers() {
 	message.textContent = "Loading...";
 
 	try {
-		const response = await fetch("/api/users");
 
-		if (!response.ok) {
-			throw new Error(`HTTP ${response.status}`);
-		}
-
-		const users = await response.json();
+		const users = await fetchUsers();
 
 		displayUsers(users);
 
@@ -40,23 +39,14 @@ export async function searchUsers() {
 	message.textContent = "Searching...";
 
 	try {
-		const response = await fetch(
-			`/api/users/search?q=${encodeURIComponent(searchText)}`,
-		);
 
-		if (!response.ok) {
-			throw new Error(`HTTP ${response.status}`);
-		}
 
-		const users = await response.json();
+		const users = await searchUsersApi(searchText);
 
 		displayUsers(users);
 
-		if (users.length === 0) {
-			message.textContent = "No users found.";
-		} else {
-			message.textContent = "";
-		}
+		message.textContent = users.length === 0 ? "No users found." : "";
+
 	} catch (error) {
 		console.error(error);
 
