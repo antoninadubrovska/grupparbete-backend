@@ -2,15 +2,24 @@ import express, { type Express, type RequestHandler } from "express";
 import { formatTimestamp } from "./timeUtilities.js";
 import usersRouter from "./routes/user.js";
 import productsRouter from "./routes/product.ts"
-import cors from "cors";
+//import cors from "cors";
 
 
 const app: Express = express();
 
+<<<<<<< HEAD
 // app.use( express.static('./static/') )
 app.use(cors({
 	origin: "http://127.0.0.1:5500"
   }));
+=======
+// app.use(cors({
+// 	origin: "http://127.0.0.1:5500"
+//   }));
+
+
+app.use(express.static('./frontend'))
+>>>>>>> origin/dev
 
 	app.use( express.static('./frontend') )
 	
@@ -32,6 +41,7 @@ app.get("/", (req, res) => {
 // mount routers
 app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);
+// TODO add cartsRouter
 
 
 

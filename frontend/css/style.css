@@ -1,0 +1,169 @@
+* {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	line-height: 1.5;
+	color: #222;
+	background: #f7f7f7;
+}
+
+button,
+input {
+	font: inherit;
+}
+
+/* ------------------------------
+	Layout
+	------------------------------ */
+
+.container {
+	display: grid;
+	gap: 1.5em;
+
+	width: min(100% - 2em, 80em);
+	margin: 0 auto;
+	padding: 2em 0;
+}
+
+.page-header {
+	display: grid;
+	gap: 0.5em;
+}
+
+h1 {
+	margin: 0;
+	font-size: 2em;
+}
+
+/* ------------------------------
+	Search
+	------------------------------ */
+
+.search-section {
+	display: grid;
+	gap: 0.5em;
+	padding: 1.25em;
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 0.5em;
+}
+
+.search-section label {
+	font-weight: 600;
+}
+
+.search-controls {
+	display: grid;
+	grid-template-columns: minmax(12em, 1fr) auto auto;
+	gap: 0.75em;
+}
+
+input {
+	min-width: 0;
+	padding: 0.65em 0.8em;
+	border: 1px solid #bbb;
+	border-radius: 0.35em;
+	background: white;
+}
+
+button {
+	padding: 0.65em 1em;
+	border: 1px solid #bbb;
+	border-radius: 0.35em;
+	background: #e2e2e2;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #d6d6d6;
+}
+
+button:focus-visible,
+input:focus-visible {
+	outline: 0.15em solid #555;
+	outline-offset: 0.1em;
+}
+
+/* ------------------------------
+	Messages
+	------------------------------ */
+
+#message {
+	min-height: 1.5em;
+}
+
+.error {
+	color: #b00020;
+}
+
+/* ------------------------------
+	Users
+	------------------------------ */
+
+.users-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1em;
+}
+
+.user-card {
+	display: grid;
+	gap: 0.75em;
+
+	padding: 1.25em;
+
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 0.5em;
+}
+
+.user-field {
+	display: grid;
+	gap: 0.2em;
+}
+
+.user-label {
+	font-size: 0.85em;
+	font-weight: 600;
+	color: #666;
+}
+
+.user-value {
+	overflow-wrap: anywhere;
+}
+
+/* ------------------------------
+	Responsive layout
+	------------------------------ */
+
+@media (max-width: 60em) {
+	.users-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 45em) {
+	.container {
+		width: min(100% - 1.5em, 80em);
+		padding: 1.25em 0;
+	}
+
+	.search-controls {
+		grid-template-columns: 1fr;
+	}
+
+	button {
+		width: 100%;
+	}
+
+	.users-grid {
+		grid-template-columns: 1fr;
+	}
+}
