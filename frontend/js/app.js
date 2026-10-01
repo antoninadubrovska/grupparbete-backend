@@ -1,6 +1,13 @@
 import { getUsers, searchUsers } from "./users.js";
 
-window.getUsers = getUsers;
-window.searchUsers = searchUsers;
+const searchForm = document.getElementById("searchForm");
+const showAllButton = document.getElementById("showAllButton");
+
+searchForm.addEventListener("submit", (event) => {
+	event.preventDefault();
+	searchUsers();
+});
+
+showAllButton.addEventListener("click", getUsers);
 
 getUsers();

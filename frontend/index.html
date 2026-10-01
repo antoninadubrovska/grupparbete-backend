@@ -14,23 +14,23 @@
 			</header>
 
 			<section class="search-section" aria-label="Search users">
-				<label for="searchInput">Search by name</label>
+				<form id="searchForm">
+					<label for="searchInput">Search by name</label>
 
-				<div class="search-controls">
-					<input
-						type="text"
-						id="searchInput"
-						placeholder="Enter a name..."
-					/>
+					<div class="search-controls">
+						<input
+							type="text"
+							id="searchInput"
+							placeholder="Enter a name..."
+						/>
 
-					<button type="button" onclick="searchUsers()">
-						Search
-					</button>
+						<button type="submit">Search</button>
 
-					<button type="button" onclick="getUsers()">
-						Show All Users
-					</button>
-				</div>
+						<button type="button" id="showAllButton">
+							Show All Users
+						</button>
+					</div>
+				</form>
 			</section>
 
 			<div id="message" aria-live="polite"></div>
