@@ -76,7 +76,6 @@ function displayProducts(products) {
 		productCard.className = "user-card";
 
 		productCard.innerHTML = `
-			<img src="${product.image}" alt="${product.name}" class="product-image" />
 
 			<div class="user-field">
 				<span class="user-label">Name</span>
