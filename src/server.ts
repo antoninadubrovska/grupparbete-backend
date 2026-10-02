@@ -2,14 +2,14 @@ import express, { type Express, type RequestHandler } from "express";
 import { formatTimestamp } from "./timeUtilities.js";
 import usersRouter from "./routes/user.js";
 import productsRouter from "./routes/product.ts"
-//import cors from "cors";
+import cors from "cors";
 
 
 const app: Express = express();
 
-// app.use(cors({
-// 	origin: "http://127.0.0.1:5500"
-//   }));
+app.use(cors({
+	origin: "http://127.0.0.1:5500"
+  }));
 
 
 app.use(express.static('./frontend'))
