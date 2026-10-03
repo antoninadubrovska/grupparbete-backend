@@ -10,8 +10,8 @@ export const cartSchema = z.object({
   updatedAt: z.string()
 })
 
-// we need this is post?
-// are we adding "addedAt & updatedAt"?
+
+// backend creates this 
 export const cartWithoutIdSchema = cartSchema.omit({
    id: true,
    addedAt: true,

@@ -5,6 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Users</title>
 		<link rel="stylesheet" href="/css/style.css" />
+		<link rel="stylesheet" href="css/cart.css">
+		<script src="/js/app.js" type="module" defer></script>
+	
+
 	</head>
 
 	<body>
@@ -62,8 +66,28 @@
 			<section class="users-section" aria-label="Products list">
 				<div class="users-grid" id="productsGrid"></div>
 			</section>
+
+			<h2>Cart</h2>
+<form id="cartSearchForm">
+	<label for="cartUserIdInput">Enter user ID</label>
+
+	<div class="search-controls">
+		<input
+			type="text"
+			id="cartUserIdInput"
+			placeholder="e.g. user-002"
+		/>
+
+		<button type="submit">Show Cart</button>
+	</div>
+</form>
+
+<div id="cartMessage" aria-live="polite"></div>
+
+<section class="users-section" aria-label="Cart items">
+	<div class="users-grid" id="cartGrid"></div>
+</section>
 		</main>
 
-		<script type="module" src="/js/app.js"></script>
 	</body>
 </html>
