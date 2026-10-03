@@ -1,3 +1,19 @@
+:root {
+	--main-bg: #f7f7f7;
+	--button-bg: #5dcbde;
+	--button-bg-hover: #3ebfd5;
+	--input-bg: white;
+	--error-color: #b00020;
+	--card-bg: #9fe0ec;
+	--text-color: #222;
+	--text-color-light: #555;
+	--card-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+	--card-shadow-hover: 0 0.5em 1em rgba(0, 0, 0, 0.15);
+	--card-border: 1px solid #90d3df;
+	--card-button-border: 1px solid #74d5e6;
+	--search-section-border: 1px solid #bbb;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -10,8 +26,8 @@ body {
 	margin: 0;
 	font-family: Arial, sans-serif;
 	line-height: 1.5;
-	color: #222;
-	background: #f7f7f7;
+	color: var(--text-color);
+	background: var(--main-bg);
 }
 
 button,
@@ -23,9 +39,10 @@ input {
 	display: grid;
 	gap: 1.5em;
 
+	background: var(--main-bg);
 	width: min(100% - 2em, 80em);
 	margin: 0 auto;
-	padding: 2em 0;
+	padding: 2.5em 0;
 }
 
 .page-header {
@@ -41,9 +58,9 @@ h1 {
 .search-section {
 	display: grid;
 	gap: 0.5em;
-	padding: 1.25em;
-	background: white;
-	border: 1px solid #ddd;
+	padding: 1.5em;
+	background: var(--main-bg);
+	border: var(--search-section-border);
 	border-radius: 0.5em;
 }
 
@@ -54,7 +71,7 @@ h1 {
 .search-controls {
 	display: grid;
 	grid-template-columns: minmax(12em, 1fr) auto auto;
-	gap: 0.75em;
+	gap: 1em;
 }
 
 input {
@@ -62,24 +79,30 @@ input {
 	padding: 0.65em 0.8em;
 	border: 1px solid #bbb;
 	border-radius: 0.35em;
-	background: white;
+	background: var(--input-bg);
 }
 
 button {
-	padding: 0.65em 1em;
-	border: 1px solid #bbb;
+	padding: 1em 1.4em;
+	border: var(--card-button-border);
 	border-radius: 0.35em;
-	background: #e2e2e2;
+	background: var(--button-bg);
 	cursor: pointer;
 }
 
 button:hover {
-	background: #d6d6d6;
+	background: var(--button-bg-hover);
+}
+
+/* see-more/see-less button doesn't chamge its height */
+.see-more-btn {
+	width: 100%;
+	align-self: start;
 }
 
 button:focus-visible,
 input:focus-visible {
-	outline: 0.15em solid #555;
+	outline: 0.15em solid var(--text-color-light);
 	outline-offset: 0.1em;
 }
 
@@ -88,7 +111,7 @@ input:focus-visible {
 }
 
 .error {
-	color: #b00020;
+	color: var(--error-color);
 }
 
 .users-grid {
@@ -99,13 +122,19 @@ input:focus-visible {
 
 .user-card {
 	display: grid;
-	gap: 0.75em;
+	gap: 0.8em;
 
-	padding: 1.25em;
+	padding: 1.8em;
 
-	background: white;
-	border: 1px solid #ddd;
+	background: var(--card-bg);
+	border: var(--card-border);
 	border-radius: 0.5em;
+	box-shadow: var(--card-shadow);
+}
+
+.user-card:hover {
+	box-shadow: var(--card-shadow-hover);
+	/* transition:all 0.2s ease-in-out; */
 }
 
 .user-id {
@@ -130,7 +159,7 @@ input:focus-visible {
 .user-label {
 	font-size: 0.85em;
 	font-weight: 600;
-	color: #666;
+	color: var(--text-color-light);
 }
 
 .user-value {
@@ -139,6 +168,10 @@ input:focus-visible {
 
 .hidden {
 	display: none;
+}
+
+.user-details {
+	margin-top: 1em;
 }
 
 @media (max-width: 60em) {
@@ -165,4 +198,9 @@ input:focus-visible {
 		grid-template-columns: 1fr;
 	}
 }
-.product-image { width: 100%; height: 160px; object-fit: contain; }
+
+/* .product-image {
+	width: 100%;
+	height: 160px;
+	object-fit: contain;
+} */
