@@ -1,24 +1,17 @@
-# Grupparbete Backend - Webbshop API
-
+Grupparbete Backend - Webbshop API
 This is the backend for our webshop project. It's made with Node.js, TypeScript, Express and DynamoDB.
 
 This doc is for anyone doing the frontend. You don't need to know how the backend works, just how to use fetch() to talk to it. Below is every route, what you send, and what you get back.
 
 Base URL (when running locally):
 
-```
 http://localhost:3000
-```
-
 What's in here:
 
-- Products - /api/products
-- Users - /api/users
-- Cart - /api/cart
-
+Products - /api/products
+Users - /api/users
+Cart - /api/cart
 All three have GET, POST, PUT and DELETE. Products and Users also have search.
-
----
 
 Products
 
@@ -26,15 +19,11 @@ GET /api/products
 
 Gets every product.
 
-```js
 fetch("http://localhost:3000/api/products")
 	.then((res) => res.json())
 	.then((products) => console.log(products));
-```
-
 You get back status 200 and something like this:
 
-```json
 [
 	{
 		"id": "product-001",
@@ -48,37 +37,28 @@ You get back status 200 and something like this:
 		"updatedAt": "2026-09-24T10:30:00Z"
 	}
 ]
-```
-
 GET /api/products/search?q=...
 
 Searches products by name. It just checks if your search text shows up anywhere in the name, so q=kli matches both "Mechanical Keyboard" and "gräsklippare".
 
-```js
 fetch("http://localhost:3000/api/products/search?q=headphones")
 	.then((res) => res.json())
 	.then((products) => console.log(products));
-```
-
 Status 200 with matches, same shape as above. If you don't send q, or send it empty, you get a 400.
 
 GET /api/products/:id
 
 One product by id.
 
-```js
 fetch("http://localhost:3000/api/products/product-001")
 	.then((res) => res.json())
 	.then((product) => console.log(product));
-```
-
 200 if it exists, 404 if that id isn't real.
 
 POST /api/products
 
 Makes a new product.
 
-```js
 fetch("http://localhost:3000/api/products", {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
@@ -92,21 +72,15 @@ fetch("http://localhost:3000/api/products", {
 		category: "Electronics",
 	}),
 });
-```
-
 Status 201 and you get the new id back:
 
-```json
 { "id": "product-7f3a2c91-..." }
-```
-
 If you forget a field or send the wrong type, you get a 400 (we use Zod to check the body).
 
 PUT /api/products/:id
 
 Updates a product. You have to send the whole product again, not just what changed.
 
-```js
 fetch("http://localhost:3000/api/products/product-001", {
 	method: "PUT",
 	headers: { "Content-Type": "application/json" },
@@ -119,35 +93,24 @@ fetch("http://localhost:3000/api/products/product-001", {
 		category: "Electronics",
 	}),
 });
-```
-
 200 if it worked, nothing comes back in the body. 400 for a bad body, 404 if that id doesn't exist.
 
 DELETE /api/products/:id
 
-```js
 fetch("http://localhost:3000/api/products/product-001", {
 	method: "DELETE",
 });
-```
-
 204 if deleted, 404 if there was nothing to delete.
-
----
 
 Users
 
 GET /api/users
 
-```js
 fetch("http://localhost:3000/api/users")
 	.then((res) => res.json())
 	.then((users) => console.log(users));
-```
-
 200:
 
-```json
 [
 	{
 		"id": "user-001",
@@ -159,33 +122,24 @@ fetch("http://localhost:3000/api/users")
 		"updatedAt": "2026-09-24T10:30:00Z"
 	}
 ]
-```
-
 GET /api/users/search?q=...
 
 Same as product search but for names.
 
-```js
 fetch("http://localhost:3000/api/users/search?q=anna")
 	.then((res) => res.json())
 	.then((users) => console.log(users));
-```
-
 200 with matches, 400 if q is missing or empty.
 
 GET /api/users/:id
 
-```js
 fetch("http://localhost:3000/api/users/user-001")
 	.then((res) => res.json())
 	.then((user) => console.log(user));
-```
-
 200 if found, 404 if not.
 
 POST /api/users
 
-```js
 fetch("http://localhost:3000/api/users", {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
@@ -196,21 +150,15 @@ fetch("http://localhost:3000/api/users", {
 		phone: "+46 73 234 56 78",
 	}),
 });
-```
-
 201 and the new id:
 
-```json
 { "id": "user-..." }
-```
-
 400 if the body is wrong.
 
 PUT /api/users/:id
 
 Quick note - this one actually sends back the whole updated user, not just an empty 200 like the others.
 
-```js
 fetch("http://localhost:3000/api/users/user-001", {
 	method: "PUT",
 	headers: { "Content-Type": "application/json" },
@@ -221,11 +169,8 @@ fetch("http://localhost:3000/api/users/user-001", {
 		phone: "+46 70 999 99 99",
 	}),
 }).then((res) => res.json());
-```
-
 200:
 
-```json
 {
 	"id": "user-001",
 	"name": "Anna Andersson",
@@ -235,21 +180,14 @@ fetch("http://localhost:3000/api/users/user-001", {
 	"createdAt": "2026-09-01T09:00:00Z",
 	"updatedAt": "2026-10-05T09:58:00Z"
 }
-```
-
 400 for a bad body, 404 if the user doesn't exist.
 
 DELETE /api/users/:id
 
-```js
 fetch("http://localhost:3000/api/users/user-001", {
 	method: "DELETE",
 });
-```
-
 204 if deleted, 404 if not found.
-
----
 
 Cart
 
@@ -259,15 +197,11 @@ GET /api/cart
 
 Gets every cart item for every user, all mixed together. Mostly good for testing/debugging. If you want just one user's cart, you can fetch this and filter by userId yourself on the frontend, or use the route below if you already have the exact id.
 
-```js
 fetch("http://localhost:3000/api/cart")
 	.then((res) => res.json())
 	.then((cartItems) => console.log(cartItems));
-```
-
 200:
 
-```json
 [
 	{
 		"id": "cart-001",
@@ -278,25 +212,19 @@ fetch("http://localhost:3000/api/cart")
 		"updatedAt": "2026-09-24T10:35:00Z"
 	}
 ]
-```
-
 GET /api/cart/:userId/:id
 
 Gets one specific cart item. Both userId and id go in the URL, in that order.
 
-```js
 fetch("http://localhost:3000/api/cart/user-001/cart-001")
 	.then((res) => res.json())
 	.then((cartItem) => console.log(cartItem));
-```
-
 200 if it exists, 404 if that userId + id combo doesn't match anything real.
 
 POST /api/cart
 
 Adds something to a user's cart.
 
-```js
 fetch("http://localhost:3000/api/cart", {
 	method: "POST",
 	headers: { "Content-Type": "application/json" },
@@ -306,21 +234,15 @@ fetch("http://localhost:3000/api/cart", {
 		amount: 2,
 	}),
 });
-```
-
 201 and the new id:
 
-```json
 { "id": "cart-7f3a2c91-..." }
-```
-
 400 if userId, productId or amount is missing or wrong.
 
 PUT /api/cart/:userId/:id
 
 Changes the product or amount on something already in the cart. userId and id go in the URL, the body just needs productId and amount.
 
-```js
 fetch("http://localhost:3000/api/cart/user-001/cart-001", {
 	method: "PUT",
 	headers: { "Content-Type": "application/json" },
@@ -329,57 +251,39 @@ fetch("http://localhost:3000/api/cart/user-001/cart-001", {
 		amount: 5,
 	}),
 });
-```
-
 200 if it worked, nothing comes back. 400 for a bad body, 404 if that cart item doesn't exist.
 
 DELETE /api/cart/:userId/:id
 
-```js
 fetch("http://localhost:3000/api/cart/user-001/cart-001", {
 	method: "DELETE",
 });
-```
-
 204 if removed, 404 if there was nothing there.
-
----
 
 Status codes, all in one spot:
 
-200 - it worked (GET, PUT)
-201 - made something new (POST)
-204 - worked, nothing to send back (DELETE)
-400 - your request is missing something or has the wrong type
-404 - couldn't find that id (or userId + id for cart)
-500 - something broke on our end
-
----
+200 - it worked (GET, PUT) 201 - made something new (POST) 204 - worked, nothing to send back (DELETE) 400 - your request is missing something or has the wrong type 404 - couldn't find that id (or userId + id for cart) 500 - something broke on our end
 
 Data model (how we set up the database)
 
 This part is more about understanding the backend than using the API, but here's how it's structured.
 
-Product:
-id, name, price, image, amountInStock, description, category, createdAt, updatedAt
+Product: id, name, price, image, amountInStock, description, category, createdAt, updatedAt
 
-User:
-id, name, role, email, phone, createdAt, updatedAt
+User: id, name, role, email, phone, createdAt, updatedAt
 
-Cart item:
-id, userId, productId, amount, addedAt, updatedAt
+Cart item: id, userId, productId, amount, addedAt, updatedAt
 
 A cart item doesn't copy the user's or product's actual info, it just points to them using userId and productId.
 
 Why we picked these partition keys and sort keys:
 
-Users and their cart items share a partition (USER#<id>), because a cart always belongs to one user, and we usually want to get a user plus their whole cart at the same time.
+Users and their cart items share a partition (USER#), because a cart always belongs to one user, and we usually want to get a user plus their whole cart at the same time.
 
-All products share one partition (PRODUCTS), because we usually want to look at the whole catalog at once. The sort key has the category built into it (CATEGORY#<category>#PRODUCT#<id>), so we can also filter by category without extra work.
+All products share one partition (PRODUCTS), because we usually want to look at the whole catalog at once. The sort key has the category built into it (CATEGORY##PRODUCT#), so we can also filter by category without extra work.
 
 How it connects:
 
-```
 USER (user-001)
    │ 1-to-many
    ↓
@@ -387,9 +291,6 @@ CART ITEM (cart-001)
    │ references
    ↓
 PRODUCT (product-001)
-```
-
-```
 Anna's cart (user-001)
 ├── Headphones (product-001) x 1
 ├── Notebook (product-014) x 2
@@ -401,4 +302,3 @@ Erik's cart (user-002)
 
 Sofia (user-003, admin)
 └── No cart items
-```

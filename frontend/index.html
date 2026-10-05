@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>UI</title>
+		<link rel="stylesheet" href="/css/style.css" />
+		<!-- <link rel="stylesheet" href="css/cart.css"> -->
+		<script src="/js/app.js" type="module" defer></script>
+
+
+	</head>
+
+	<body>
+		<main class="container">
+			<header class="page-header">
+				<h2>Users</h2>
+			</header>
+
+			<section class="search-section" aria-label="Search users">
+				<form id="searchForm">
+					<label for="searchInput">Search by users name</label>
+
+					<div class="search-controls">
+						<input
+							type="text"
+							id="searchInput"
+							placeholder="Enter a name..."
+						/>
+
+						<button type="submit">Search</button>
+
+						<button type="button" id="showAllButton">
+							Show All Users
+						</button>
+					</div>
+				</form>
+			</section>
+
+			<div id="message" aria-live="polite"></div>
+
+			<section class="users-section" aria-label="Users list">
+				<div class="users-grid" id="usersGrid"></div>
+			</section>
+
+			<h2>Products</h2>
+				<form id="productSearchForm">
+					<label for="productSearchInput">Search products by name</label>
+
+					<div class="search-controls">
+						<input
+							type="text"
+							id="productSearchInput"
+							placeholder="Enter a product name..."
+						/>
+
+						<button type="submit">Search</button>
+
+						<button type="button" id="showAllProductsButton">
+							Show All Products
+						</button>
+					</div>
+				</form>
+				<div id="productsMessage" aria-live="polite"></div>
+
+			<section class="users-section" aria-label="Products list">
+				<div class="users-grid" id="productsGrid"></div>
+			</section>
+
+			<h2>Cart</h2>
+<form id="cartSearchForm">
+	<label for="cartUserIdInput">Enter user ID</label>
+
+	<div class="search-controls">
+		<input
+			type="text"
+			id="cartUserIdInput"
+			placeholder="e.g. user-002"
+		/>
+
+		<button type="submit">Show Cart</button>
+	</div>
+</form>
+
+<div id="cartMessage" aria-live="polite"></div>
+
+<section class="users-section" aria-label="Cart items">
+	<div class="users-grid" id="cartGrid"></div>
+</section>
+		</main>
+
+	</body>
+</html>
